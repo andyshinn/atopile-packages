@@ -27,7 +27,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Footprint" "E22-900M30S:XCVR_E22-900M30S"
+		(property "Footprint" "E22-900M30S:E22-900M30S"
 			(at 0 0 0)
 			(effects
 				(font
