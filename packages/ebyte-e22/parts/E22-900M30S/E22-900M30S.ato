@@ -1,0 +1,29 @@
+#pragma experiment("TRAITS")
+import is_atomic_part
+
+component E22_900M30S_package:
+    trait is_atomic_part<manufacturer="EBYTE", partnumber="E22-900M30S", footprint="E22-900M30S.kicad_mod", symbol="E22-900M30S.kicad_sym", model="E22-900M30S">
+
+    # Pin definitions based on datasheet pinout
+    pin 1   # GND
+    pin 2   # GND
+    pin 3   # GND
+    pin 4   # GND
+    pin 5   # GND
+    pin 6   # RXEN - RF switch receiving control pin
+    pin 7   # TXEN - RF switch transmitting control pin
+    pin 8   # DIO2 - Configurable universal IO port
+    pin 9   # VCC - Power supply 2.5~5.5V
+    pin 10  # VCC - Power supply 2.5~5.5V
+    pin 11  # GND
+    pin 12  # GND
+    pin 13  # DIO1 - Configurable universal IO port
+    pin 14  # BUSY - Status indication
+    pin 15  # NRST - Chip reset trigger input pin
+    pin 16  # MISO - SPI data output pin
+    pin 17  # MOSI - SPI data input pin
+    pin 18  # SCK - SPI clock input pin
+    pin 19  # NSS - Module chip select pin
+    pin 20  # GND
+    pin 21  # ANT - Antenna interface, stamp hole
+    pin 22  # GND

@@ -1,0 +1,61 @@
+#pragma experiment("BRIDGE_CONNECT")
+
+"""Example usage of the Ebyte E22-900M30S LoRa module."""
+
+import ElectricPower, ElectricLogic, SPI, Resistor, Capacitor
+
+from "ebyte-e22-900m30s.ato" import E22_900M30S_driver
+
+module Usage:
+    # Main power supply - 5V recommended for best performance
+    power_5v = new ElectricPower
+    assert power_5v.voltage within 5.0V +/- 5%
+
+    # LoRa module
+    lora_module = new E22_900M30S_driver
+    lora_module.power ~ power_5v
+
+    # Microcontroller SPI interface example
+    # Connect to your microcontroller's SPI bus
+    mcu_spi = new SPI
+    mcu_spi ~ lora_module.spi
+
+    # Chip select control from MCU
+    mcu_cs = new ElectricLogic
+    mcu_cs ~ lora_module.nss
+
+    # Reset control from MCU
+    mcu_reset = new ElectricLogic
+    mcu_reset ~ lora_module.reset
+
+    # Status monitoring
+    mcu_busy = new ElectricLogic
+    mcu_busy ~ lora_module.busy
+
+    # Digital IO pins for interrupt/control
+    mcu_dio1 = new ElectricLogic
+    mcu_dio1 ~ lora_module.dio1
+
+    # RF switch control pins
+    mcu_rxen = new ElectricLogic
+    mcu_rxen ~ lora_module.rxen
+
+    mcu_txen = new ElectricLogic
+    mcu_txen ~ lora_module.txen
+
+    # Antenna connection - use appropriate antenna for 868/915MHz
+    # Connect to external antenna via coax or directly to PCB antenna
+    antenna_connection = new ElectricLogic
+    antenna_connection ~ lora_module.antenna
+
+    # Pull-up resistor on reset (recommended)
+    reset_pullup = new Resistor
+    reset_pullup.resistance = 10kohm +/- 5%
+    reset_pullup.package = "0402"
+    power_5v.hv ~> reset_pullup ~> lora_module.reset.line
+
+    # Additional power supply filtering (recommended for RF applications)
+    supply_filter = new Capacitor
+    supply_filter.capacitance = 10uF +/- 20%
+    supply_filter.package = "0805"
+    power_5v.hv ~> supply_filter ~> power_5v.lv

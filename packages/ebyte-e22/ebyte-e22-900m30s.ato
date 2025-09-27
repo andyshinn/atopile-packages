@@ -1,0 +1,89 @@
+#pragma experiment("FOR_LOOP")
+#pragma experiment("BRIDGE_CONNECT")
+
+import ElectricPower, ElectricLogic, SPI, Capacitor
+
+from "parts/E22-900M30S/E22-900M30S.ato" import E22_900M30S_package
+
+module E22_900M30S_driver:
+    ic = new E22_900M30S_package
+
+    # Power supply
+    power = new ElectricPower
+    power.required = True
+    assert power.voltage within 2.5V to 5.5V
+    # Connect power pins (9, 10) to VCC and all GND pins (1,2,3,4,5,11,12,20,22) to ground
+    power.hv ~ ic.9    # VCC
+    power.hv ~ ic.10   # VCC
+    power.lv ~ ic.1    # GND
+    power.lv ~ ic.2    # GND
+    power.lv ~ ic.3    # GND
+    power.lv ~ ic.4    # GND
+    power.lv ~ ic.5    # GND
+    power.lv ~ ic.11   # GND
+    power.lv ~ ic.12   # GND
+    power.lv ~ ic.20   # GND
+    power.lv ~ ic.22   # GND
+
+    # SPI interface for communicating with the SX1262 chip
+    spi = new SPI
+    spi.sclk.line ~ ic.18      # SCK - SPI clock input
+    spi.mosi.line ~ ic.17      # MOSI - SPI data input pin
+    spi.miso.line ~ ic.16      # MISO - SPI data output pin
+
+    # Chip select pin (active low)
+    nss = new ElectricLogic
+    nss.line ~ ic.19           # NSS - Module chip select pin
+
+    # Reset pin (active low)
+    reset = new ElectricLogic
+    reset.line ~ ic.15         # NRST - Chip reset trigger input pin
+
+    # Status and control pins
+    busy = new ElectricLogic
+    busy.line ~ ic.14          # BUSY - Status indication (output)
+
+    # Digital IO pins (configurable)
+    dio1 = new ElectricLogic
+    dio1.line ~ ic.13          # DIO1 - Configurable universal IO port
+
+    dio2 = new ElectricLogic
+    dio2.line ~ ic.8           # DIO2 - Configurable universal IO port
+
+    # RF switch control pins
+    rxen = new ElectricLogic
+    rxen.line ~ ic.6           # RXEN - RF switch receiving control pin
+
+    txen = new ElectricLogic
+    txen.line ~ ic.7           # TXEN - RF switch transmitting control pin
+
+    # Antenna connection
+    antenna = new ElectricLogic
+    antenna.line ~ ic.21       # ANT - Antenna interface, stamp hole (50 ohm)
+
+    # Connect all logic references to main power
+    power.lv ~ spi.sclk.reference.lv
+    power.hv ~ spi.sclk.reference.hv
+    power.lv ~ nss.reference.lv
+    power.hv ~ nss.reference.hv
+    power.lv ~ reset.reference.lv
+    power.hv ~ reset.reference.hv
+    power.lv ~ busy.reference.lv
+    power.hv ~ busy.reference.hv
+    power.lv ~ dio1.reference.lv
+    power.hv ~ dio1.reference.hv
+    power.lv ~ dio2.reference.lv
+    power.hv ~ dio2.reference.hv
+    power.lv ~ rxen.reference.lv
+    power.hv ~ rxen.reference.hv
+    power.lv ~ txen.reference.lv
+    power.hv ~ txen.reference.hv
+    power.lv ~ antenna.reference.lv
+    power.hv ~ antenna.reference.hv
+
+    # Decoupling capacitors - recommended for stable operation
+    power_caps = new Capacitor[2]
+    for cap in power_caps:
+        cap.capacitance = 100nF +/- 20%
+        cap.package = "0402"
+        power.hv ~> cap ~> power.lv

@@ -1,0 +1,22 @@
+requires-atopile: "^0.12.4"
+
+paths:
+  src: ./
+  layout: ./layouts
+
+builds:
+  default:
+    entry: "ebyte-e22-900m30s.ato:E22_900M30S_driver"
+  usage:
+    entry: "usage.ato:Usage"
+
+package:
+  identifier: "andyshinn/ebyte-e22-900m30s"
+  repository: "https://github.com/andyshinn/atopile-packages"
+  version: "0.1.0"
+  authors:
+    - name: "Andy Shinn"
+      email: "andys@andyshinn.as"
+  summary: "SX1262; LoRa; 868/915MHz; 1W; SMD; Wireless; Module"
+  license: MIT
+  homepage: https://www.cdebyte.com/products/E22-900M30S
