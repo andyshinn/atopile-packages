@@ -1,10 +1,147 @@
-import ElectricPower
+#pragma experiment("FOR_LOOP")
+#pragma experiment("BRIDGE_CONNECT")
+
+import ElectricPower, ElectricLogic, I2C, SPI, UART, USB2_0, SWD, Capacitor
 
 from "parts/E73-2G4M08S1CX/E73-2G4M08S1CX.ato" import Ebyte_E73_2G4M08S1CX_package
 
-module Ebyte_E73_base:
+module Ebyte_E73_2G4M08S1CX_driver:
+    ic = new Ebyte_E73_2G4M08S1CX_package
+
+    # Power rails
+    power_vcc = new ElectricPower
+    power_vcc.required = True
+    assert power_vcc.voltage within 1.7V to 5.5V
+    # Best performance at 3.3V
+    power_vcc.lv ~ ic.GND
+    power_vcc.hv ~ ic.VCC
+
+    power_vdh = new ElectricPower
+    power_vdh.required = True
+    # High voltage power supply - typically same as VCC
+    power_vdh.lv ~ ic.GND
+    power_vdh.hv ~ ic.VDH
+
+    power_vbs = new ElectricPower
+    power_vbs.required = False
+    # USB power supply, 5V input for USB33V voltage regulator
+    power_vbs.lv ~ ic.GND
+    power_vbs.hv ~ ic.VBS
+
+    # Main power interface (expose VCC as primary power)
     power = new ElectricPower
     power.required = True
+    power ~ power_vcc
+    power_vdh ~ power_vcc  # Typically connected together
 
-module Ebyte_E73_2G4M08S1CX from Ebyte_E73_base:
-    package = new Ebyte_E73_2G4M08S1CX_package
+    # USB interface
+    usb = new USB2_0
+    usb.usb_if.d.p.line ~ ic.D_PLUS
+    usb.usb_if.d.n.line ~ ic.D_MINUS
+    usb.usb_if.buspower ~ power_vbs
+
+    # SWD debugging interface
+    swd = new SWD
+    swd.clk.line ~ ic.SWC
+    swd.dio.line ~ ic.SWD
+    swd.reset.line ~ ic.RST
+    swd.swo.line ~ ic.P1_00  # Commonly used for SWO on nRF52840
+
+    # I2C interfaces (nRF52840 has multiple I2C peripherals)
+    i2c0 = new I2C
+    i2c0.scl.line ~ ic.P0_26  # Pin 12 - commonly used for I2C
+    i2c0.sda.line ~ ic.P0_06  # Pin 14 - commonly used for I2C
+
+    # SPI interface
+    spi0 = new SPI
+    spi0.sclk.line ~ ic.P0_22  # Pin 34 - QSPI can be used as SPI
+    spi0.mosi.line ~ ic.P0_20  # Pin 32
+    spi0.miso.line ~ ic.P0_24  # Pin 35
+    # Chip select as separate GPIO
+    spi0_cs = new ElectricLogic
+    spi0_cs.line ~ ic.P0_13    # Pin 33
+
+    # UART interface
+    uart0 = new UART
+    uart0.base_uart.tx.line ~ ic.P0_07   # Pin 22
+    uart0.base_uart.rx.line ~ ic.P0_08   # Pin 16
+
+    # General purpose digital I/O pins
+    gpio = new ElectricLogic[20]
+
+    # Map remaining GPIO pins
+    gpio[0].line ~ ic.P1_11    # Pin 1
+    gpio[1].line ~ ic.P1_10    # Pin 2
+    gpio[2].line ~ ic.P0_03    # Pin 3
+    gpio[3].line ~ ic.P1_13    # Pin 6
+    gpio[4].line ~ ic.P1_09    # Pin 17
+    gpio[5].line ~ ic.P1_12    # Pin 20
+    gpio[6].line ~ ic.P1_15    # Pin 28
+    gpio[7].line ~ ic.P1_17    # Pin 30
+    gpio[8].line ~ ic.P1_02    # Pin 38
+    gpio[9].line ~ ic.P1_04    # Pin 40
+    gpio[10].line ~ ic.P1_06   # Pin 42
+
+    # Analog inputs (can also be used as GPIO)
+    adc = new ElectricLogic[8]
+    adc[0].line ~ ic.AI0       # Pin 7 - Analog input 0
+    adc[1].line ~ ic.AI2       # Pin 18 - Analog input 2
+    adc[2].line ~ ic.AI3       # Pin 15 - Analog input 3
+    adc[3].line ~ ic.AI4       # Pin 4 - Analog input 4
+    adc[4].line ~ ic.AI5       # Pin 8 - Analog input 5
+    adc[5].line ~ ic.AI6       # Pin 10 - Analog input 6
+    adc[6].line ~ ic.AI7       # Pin 9 - Analog input 7
+    adc[7].line ~ ic.P1_00     # Pin 36 - can be ADC
+
+    # NFC pins (can be used as GPIO if NFC not needed)
+    nfc = new ElectricLogic[2]
+    nfc[0].line ~ ic.NF1       # Pin 41 - NFC input 1
+    nfc[1].line ~ ic.NF2       # Pin 43 - NFC input 2
+
+    # Crystal pins for external 32.768kHz crystal
+    xtal_32khz = new ElectricLogic[2]
+    xtal_32khz[0].line ~ ic.XL1  # Pin 11 - Connect to 32.768 kHz crystal
+    xtal_32khz[1].line ~ ic.XL2  # Pin 13 - Connect to 32.768 kHz crystal
+
+    # DC/DC converter output
+    dcdc_out = new ElectricLogic
+    dcdc_out.line ~ ic.DCH     # Pin 25 - DC/DC converter output
+
+    # Connect all logic references to main power
+    power.lv ~ i2c0.scl.reference.lv
+    power.hv ~ i2c0.scl.reference.hv
+    power.lv ~ spi0.sclk.reference.lv
+    power.hv ~ spi0.sclk.reference.hv
+    power.lv ~ spi0_cs.reference.lv
+    power.hv ~ spi0_cs.reference.hv
+    power.lv ~ uart0.base_uart.tx.reference.lv
+    power.hv ~ uart0.base_uart.tx.reference.hv
+    power.lv ~ swd.clk.reference.lv
+    power.hv ~ swd.clk.reference.hv
+
+    # Connect GPIO references to power
+    for gpio_pin in gpio:
+        power.lv ~ gpio_pin.reference.lv
+        power.hv ~ gpio_pin.reference.hv
+
+    for adc_pin in adc:
+        power.lv ~ adc_pin.reference.lv
+        power.hv ~ adc_pin.reference.hv
+
+    for nfc_pin in nfc:
+        power.lv ~ nfc_pin.reference.lv
+        power.hv ~ nfc_pin.reference.hv
+
+    for xtal_pin in xtal_32khz:
+        power.lv ~ xtal_pin.reference.lv
+        power.hv ~ xtal_pin.reference.hv
+
+    power.lv ~ dcdc_out.reference.lv
+    power.hv ~ dcdc_out.reference.hv
+
+    # Decoupling capacitors
+    power_caps = new Capacitor[2]
+    for cap in power_caps:
+        cap.capacitance = 100nF +/- 20%
+        cap.package = "0402"
+        power.hv ~> cap ~> power.lv

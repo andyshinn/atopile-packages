@@ -6,7 +6,7 @@ paths:
 
 builds:
   default:
-    entry: "ebyte-e73-2g4m08s1cx.ato:Ebyte_E73_2G4M08S1CX"
+    entry: "ebyte-e73-2g4m08s.ato:Ebyte_E73_2G4M08S1CX_driver"
   usage:
     entry: "usage.ato:Usage"
 

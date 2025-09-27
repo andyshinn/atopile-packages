@@ -1,6 +1,43 @@
-"""Example usage of the ebyte-e73-2g4m08s1cx package."""
+"""Example usage of the Ebyte E73-2G4M08S1CX nRF52840 BLE module."""
 
-from "ebyte_e73_2g4m08s1cx.ato" import EbyteE732g4m08s1cx
+import ElectricPower, ElectricLogic, I2C, Resistor
 
-module Example:
-    blah = new EbyteE732g4m08s1cx
+from "ebyte-e73-2g4m08s.ato" import Ebyte_E73_2G4M08S1CX_driver
+
+module Usage:
+    # Main power supply
+    power_3v3 = new ElectricPower
+    assert power_3v3.voltage within 3.3V +/- 5%
+
+    # Ebyte E73 nRF52840 BLE module
+    ble_module = new Ebyte_E73_2G4M08S1CX_driver
+    ble_module.power ~ power_3v3
+
+    # External I2C sensor example
+    sensor_power = new ElectricPower
+    sensor_power ~ power_3v3
+
+    # Connect I2C bus (module has built-in I2C interface)
+    # ble_module.i2c0 can be connected to external I2C devices
+
+    # Example: Connect some GPIO pins for LEDs
+    led_gpio = new ElectricLogic[3]
+    led_gpio[0] ~ ble_module.gpio[0]  # Use first GPIO for LED
+    led_gpio[1] ~ ble_module.gpio[1]  # Use second GPIO for LED
+    led_gpio[2] ~ ble_module.gpio[2]  # Use third GPIO for LED
+
+    # SWD programming/debugging interface
+    # ble_module.swd can be connected to a debugger
+
+    # USB interface for programming or communication
+    # ble_module.usb can be connected to USB connector
+
+    # Reset button
+    reset_button = new ElectricLogic
+    reset_button ~ ble_module.swd.reset
+
+    # Pull-up resistor on reset
+    reset_pullup = new Resistor
+    reset_pullup.resistance = 10kohm +/- 5%
+    reset_pullup.package = "0402"
+    power_3v3.hv ~> reset_pullup ~> ble_module.swd.reset.line
