@@ -1,0 +1,6 @@
+"""Example usage of the ebyte-e73-2g4m08s1cx package."""
+
+from "ebyte_e73_2g4m08s1cx.ato" import EbyteE732g4m08s1cx
+
+module Example:
+    blah = new EbyteE732g4m08s1cx

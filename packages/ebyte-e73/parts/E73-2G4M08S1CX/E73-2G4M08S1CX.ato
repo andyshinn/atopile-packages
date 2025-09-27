@@ -1,0 +1,49 @@
+#pragma experiment("TRAITS")
+import is_atomic_part
+
+component Ebyte_E73_2G4M08S1CX_package:
+    trait is_atomic_part<manufacturer="EBYTE", partnumber="E73-2G4M08S1CX", footprint="E73-2G4M08S1CX.kicad_mod", symbol="E73-2G4M08S1CX.kicad_sym", model="E73-2G4M08S1CX">
+
+    signal GND ~ pin 5
+    GND ~ pin 21
+    GND ~ pin 24
+    signal P1_11 ~ pin 1
+    signal P1_10 ~ pin 2
+    signal P0_03 ~ pin 3
+    signal AI4 ~ pin 4
+    signal P1_13 ~ pin 6
+    signal AI0 ~ pin 7
+    signal AI5 ~ pin 8
+    signal AI7 ~ pin 9
+    signal AI6 ~ pin 10
+    signal XL1 ~ pin 11
+    signal P0_26 ~ pin 12
+    signal XL2 ~ pin 13
+    signal P0_06 ~ pin 14
+    signal AI3 ~ pin 15
+    signal P0_08 ~ pin 16
+    signal P1_09 ~ pin 17
+    signal AI2 ~ pin 18
+    signal VCC ~ pin 19
+    signal P1_12 ~ pin 20
+    signal P0_07 ~ pin 22
+    signal VDH ~ pin 23
+    signal DCH ~ pin 25
+    signal RST ~ pin 26
+    signal VBS ~ pin 27
+    signal P1_15 ~ pin 28
+    signal D_MINUS ~ pin 29
+    signal P1_17 ~ pin 30
+    signal D_PLUS ~ pin 31
+    signal P0_20 ~ pin 32
+    signal P0_13 ~ pin 33
+    signal P0_22 ~ pin 34
+    signal P0_24 ~ pin 35
+    signal P1_00 ~ pin 36
+    signal SWD ~ pin 37
+    signal P1_02 ~ pin 38
+    signal SWC ~ pin 39
+    signal P1_04 ~ pin 40
+    signal NF1 ~ pin 41
+    signal P1_06 ~ pin 42
+    signal NF2 ~ pin 43

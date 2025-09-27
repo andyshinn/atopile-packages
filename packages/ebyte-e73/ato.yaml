@@ -1,0 +1,22 @@
+requires-atopile: "^0.12.4"
+
+paths:
+  src: ./
+  layout: ./layouts
+
+builds:
+  default:
+    entry: "ebyte-e73-2g4m08s1cx.ato:Ebyte_E73_2G4M08S1CX"
+  usage:
+    entry: "usage.ato:Usage"
+
+package:
+  identifier: "andyshinn/ebyte-e73-2g4m08s1cx"
+  repository: "https://github.com/andyshinn/atopile-packages"
+  version: "0.1.0"
+  authors:
+    - name: "Andy Shinn"
+      email: "andys@andyshinn.as"
+  summary: "nRF52840; BLE5.0; SMD; 2.4GHz; Nordic; Wireless; Module"
+  license: MIT
+  homepage: https://ebyteiot.com/products/2-4ghz-ble-mesh-small-smd-e73-2g4m08s1c-nordic-nrf52840-module-small-size-ble-5-0

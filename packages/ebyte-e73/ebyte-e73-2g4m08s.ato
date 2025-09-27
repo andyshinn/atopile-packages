@@ -1,0 +1,10 @@
+import ElectricPower
+
+from "parts/E73-2G4M08S1CX/E73-2G4M08S1CX.ato" import Ebyte_E73_2G4M08S1CX_package
+
+module Ebyte_E73_base:
+    power = new ElectricPower
+    power.required = True
+
+module Ebyte_E73_2G4M08S1CX from Ebyte_E73_base:
+    package = new Ebyte_E73_2G4M08S1CX_package
