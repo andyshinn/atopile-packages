@@ -173,6 +173,42 @@
                 )
             )
         )
+        (property "LCSC" "C411294"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "a80a61a6-4ddf-49c2-9643-ed2d4642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (property "Manufacturer" "EBYTE"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "3d9c7749-3eba-486e-822d-ed3e4642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (property "Partnumber" "E22-900M30S"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "809cf79c-9d1d-465b-a230-ebdb4642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
         (attr smd)
         (fp_line
             (start -12 -19.25)

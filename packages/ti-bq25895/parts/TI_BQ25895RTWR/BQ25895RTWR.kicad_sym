@@ -7,7 +7,7 @@
     (property "Value" "BQ25895RTWR" (id 1) (at -12.7 -34.48 0.0)
       (effects (font (size 1.27 1.27)) (justify bottom left))
     )
-    (property "Footprint" "BQ25895RTWR:QFN50P400X400X80-25N" (id 2) (at 0 0 0)
+    (property "Footprint" "" (id 2) (at 0 0 0)
       (effects (font (size 1.27 1.27)) (justify bottom) hide)
     )
     (property "MF" "Texas Instruments" (id 4) (at 0 0 0)

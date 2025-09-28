@@ -1,8 +1,10 @@
 #pragma experiment("TRAITS")
 import is_atomic_part
+import has_part_picked
 
 component E22_900M30S_package:
-    trait is_atomic_part<manufacturer="EBYTE", partnumber="E22-900M30S", footprint="E22-900M30S:E22-900M30S", symbol="E22-900M30S:E22-900M30S", model="E22-900M30S">
+    trait is_atomic_part<manufacturer="EBYTE", partnumber="E22-900M30S", footprint="E22-900M30S.kicad_mod", symbol="E22-900M30S.kicad_sym", model="E22-900M30S">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C411294", manufacturer="EBYTE", partno="E22-900M30S">
 
     # Pin definitions based on datasheet pinout
     pin 1   # GND

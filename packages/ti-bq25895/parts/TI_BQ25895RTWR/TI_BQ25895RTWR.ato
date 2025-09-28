@@ -1,12 +1,14 @@
 #pragma experiment("TRAITS")
 import has_designator_prefix
 import is_atomic_part
+import has_part_picked
 
 component TI_BQ25895RTWR_package:
     """TI BQ25895 5A I2C Controlled Buck Battery Charger with USB OTG Support"""
 
     # Traits at the top
-    trait is_atomic_part<manufacturer="Texas Instruments", partnumber="BQ25895RTWR", footprint="QFN50P400X400X80-25N.kicad_mod", symbol="BQ25895RTWR.kicad_sym", model="BQ25895RTWR.step">
+    trait is_atomic_part<manufacturer="Texas Instruments", partnumber="BQ25895RTWR", footprint="WQFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm.kicad_mod", symbol="BQ25895RTWR.kicad_sym", model="BQ25895RTWR.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C80200", manufacturer="TI", partno="BQ25895RTWR">
     trait has_designator_prefix<prefix="U">
 
     # Pin definitions matching the BQ25895 24-pin WQFN package

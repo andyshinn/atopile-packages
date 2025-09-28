@@ -1,8 +1,10 @@
 #pragma experiment("TRAITS")
 import is_atomic_part
+import has_part_picked
 
 component Ebyte_E73_2G4M08S1CX_package:
     trait is_atomic_part<manufacturer="EBYTE", partnumber="E73-2G4M08S1CX", footprint="E73-2G4M08S1CX.kicad_mod", symbol="E73-2G4M08S1CX.kicad_sym", model="E73-2G4M08S1CX">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C2764963", manufacturer="EBYTE", partno="E73-2G4M08S1CX">
 
     signal GND ~ pin 5
     GND ~ pin 21

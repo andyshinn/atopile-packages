@@ -1,4 +1,4 @@
-"""Example usage of the Ebyte E73-2G4M08S1CX nRF52840 BLE module."""
+#pragma experiment("BRIDGE_CONNECT")
 
 import ElectricPower, ElectricLogic, I2C, Resistor
 
@@ -12,6 +12,8 @@ module Usage:
     # Ebyte E73 nRF52840 BLE module
     ble_module = new Ebyte_E73_2G4M08S1CX_driver
     ble_module.power ~ power_3v3
+    ble_module.power_vcc ~ power_3v3
+    ble_module.power_vdh ~ power_3v3
 
     # External I2C sensor example
     sensor_power = new ElectricPower
