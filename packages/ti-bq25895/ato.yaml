@@ -1,0 +1,22 @@
+requires-atopile: "^0.12.4"
+
+paths:
+  src: ./
+  layout: ./layouts
+
+builds:
+  default:
+    entry: bq25895.ato:BQ25895_driver
+  usage:
+    entry: usage.ato:Usage
+
+package:
+  identifier: "andyshinn/ti-bq25895"
+  repository: "https://github.com/andyshinn/atopile-packages"
+  version: "0.1.0"
+  authors:
+    - name: "Andy Shinn"
+      email: "andys@andyshinn.as"
+  summary: "TI BQ25895; 5A; I2C; Battery Charger; USB OTG; Li-Ion; WQFN-24"
+  license: MIT
+  homepage: https://www.ti.com/product/BQ25895

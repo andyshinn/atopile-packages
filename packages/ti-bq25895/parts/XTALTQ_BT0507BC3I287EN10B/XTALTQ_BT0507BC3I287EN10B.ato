@@ -1,0 +1,26 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component XTALTQ_BT0507BC3I287EN10B_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C965542", date="2025-09-28T00:33:04.576726+00:00", checksum="a6255a030a408fec475473fe69c1d06ef1e97e6519f20fdd0eef22c33af4bfc5">
+
+    trait is_atomic_part<manufacturer="XTALTQ", partnumber="BT0507BC3I287EN10B", footprint="OSC-SMD_10P-L7.0-W5.0-BL_BT507BC.kicad_mod", symbol="BT0507BC3I287EN10B.kicad_sym", model="OSC-SMD_10P-L7.0-W5.0-BL_BT507BC.STEP">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C965542", manufacturer="XTALTQ", partno="BT0507BC3I287EN10B">
+    trait has_designator_prefix<prefix="U">
+
+    # pins
+    pin 5
+    pin 6
+    pin 7
+    pin 8
+    pin 9
+    pin 10
+    signal GND ~ pin 2
+    signal Oouput ~ pin 3
+    signal VCC ~ pin 4
+    signal VCON ~ pin 1

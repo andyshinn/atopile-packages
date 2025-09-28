@@ -1,0 +1,113 @@
+import Resistor, Capacitor
+import ElectricPower, Electrical, ElectricLogic, I2C
+from "parts/TI_BQ25895RTWR/TI_BQ25895RTWR.ato" import TI_BQ25895RTWR_package
+
+module BQ25895_driver:
+    # Import the actual TI BQ25895 component
+    package = new TI_BQ25895RTWR_package
+
+    # Power interfaces
+    power_vbus = new ElectricPower
+    power_vbus.required = True
+    assert power_vbus.voltage within 3.9V to 14V
+    power_vbus.hv ~ package.VBUS
+    power_vbus.lv ~ package.PGND
+
+    power_battery = new ElectricPower
+    power_battery.required = True
+    assert power_battery.voltage within 3.0V to 4.5V
+    power_battery.hv ~ package.BAT
+    power_battery.lv ~ package.PGND
+
+    power_system = new ElectricPower
+    power_system.required = True
+    assert power_system.voltage within 3.5V to 14V
+    power_system.hv ~ package.SYS
+    power_system.lv ~ package.PGND
+
+    power_regn = new ElectricPower
+    assert power_regn.voltage within 3.2V to 3.4V
+    power_regn.hv ~ package.REGN
+    power_regn.lv ~ package.AGND
+
+    # I2C interface
+    i2c = new I2C
+    i2c.address = 0x6A
+    i2c.scl.line ~ package.SCL
+    i2c.sda.line ~ package.SDA
+    i2c.scl.reference ~ power_regn
+    i2c.sda.reference ~ power_regn
+
+    # Control pins
+    charge_enable = new ElectricLogic
+    charge_enable.line ~ package.CE
+    charge_enable.reference ~ power_regn
+
+    otg_enable = new ElectricLogic
+    otg_enable.line ~ package.OTG
+    otg_enable.reference ~ power_regn
+
+    input_select = new ElectricLogic
+    input_select.line ~ package.PSEL
+    input_select.reference ~ power_regn
+
+    # Status pins
+    charge_status = new ElectricLogic
+    charge_status.line ~ package.STAT
+    charge_status.reference ~ power_regn
+
+    interrupt = new ElectricLogic
+    interrupt.line ~ package.INT
+    interrupt.reference ~ power_regn
+
+    # USB data interface
+    usb_dp = new ElectricLogic
+    usb_dp.line ~ package.DP
+    usb_dp.reference ~ power_regn
+
+    usb_dm = new ElectricLogic
+    usb_dm.line ~ package.DM
+    usb_dm.reference ~ power_regn
+
+    # Thermal sensing
+    thermal_sense = new ElectricLogic
+    thermal_sense.line ~ package.TS
+    thermal_sense.reference ~ power_regn
+
+    # Additional control
+    power_on = new ElectricLogic
+    power_on.line ~ package.QON
+    power_on.reference ~ power_regn
+
+    current_limit = new ElectricLogic
+    current_limit.line ~ package.ILIM
+    current_limit.reference ~ power_regn
+
+    # Decoupling capacitors
+    # VBUS decoupling
+    vbus_cap = new Capacitor
+    vbus_cap.capacitance = 10uF +/- 20%
+    vbus_cap.max_voltage = 25V
+    vbus_cap.package = "0805"
+    power_vbus.hv ~ vbus_cap.unnamed[0]
+    power_vbus.lv ~ vbus_cap.unnamed[1]
+
+    # REGN decoupling
+    regn_cap = new Capacitor
+    regn_cap.capacitance = 1uF +/- 20%
+    regn_cap.max_voltage = 6.3V
+    regn_cap.package = "0402"
+    power_regn.hv ~ regn_cap.unnamed[0]
+    power_regn.lv ~ regn_cap.unnamed[1]
+
+    # Additional REGN bypass capacitor
+    regn_bypass = new Capacitor
+    regn_bypass.capacitance = 100nF +/- 20%
+    regn_bypass.max_voltage = 6.3V
+    regn_bypass.package = "0402"
+    power_regn.hv ~ regn_bypass.unnamed[0]
+    power_regn.lv ~ regn_bypass.unnamed[1]
+
+    # Connect analog and power grounds
+    package.AGND ~ package.PGND
+
