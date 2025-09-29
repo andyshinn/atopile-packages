@@ -1,0 +1,48 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import is_atomic_part
+import has_part_picked
+
+component TI_INA3221:
+    """TI INA3221 26V, Triple Channel, 13-Bit, I2C Output Current and Voltage Monitor with Alerts"""
+
+    # Traits at the top
+    trait is_atomic_part<manufacturer="Texas Instruments", partnumber="INA3221", footprint="Texas_RGV0016A_VQFN-16-1EP_4x4mm_P0.65mm_EP2.1x2.1mm.kicad_mod", symbol="INA3221.kicad_sym">
+    trait has_designator_prefix<prefix="U">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C80200", manufacturer="TI", partno="BQ25895RTWR">
+
+    # Pin definitions matching the INA3221 16-pin VQFN package
+    pin 1   # IN3_N
+    pin 2   # IN3_P
+    pin 3   # GND
+    pin 4   # VS
+    pin 5   # A0
+    pin 6   # SCL
+    pin 7   # SDA
+    pin 8   # WARNING
+    pin 9   # CRITICAL
+    pin 10  # PV
+    pin 11  # IN1_N
+    pin 12  # IN1_P
+    pin 13  # TC
+    pin 14  # IN2_N
+    pin 15  # IN2_P
+    pin 16  # VPU
+
+    # Named pin aliases using ~ syntax
+    signal IN3_N ~ pin 1     # Channel 3 shunt negative
+    signal IN3_P ~ pin 2     # Channel 3 shunt positive
+    signal GND ~ pin 3       # Ground
+    signal VS ~ pin 4        # Supply voltage
+    signal A0 ~ pin 5        # Address pin
+    signal SCL ~ pin 6       # I2C clock
+    signal SDA ~ pin 7       # I2C data
+    signal WARNING ~ pin 8   # Warning alert output
+    signal CRITICAL ~ pin 9  # Critical alert output
+    signal PV ~ pin 10       # Power valid output
+    signal IN1_N ~ pin 11    # Channel 1 shunt negative
+    signal IN1_P ~ pin 12    # Channel 1 shunt positive
+    signal TC ~ pin 13       # Timing control output
+    signal IN2_N ~ pin 14    # Channel 2 shunt negative
+    signal IN2_P ~ pin 15    # Channel 2 shunt positive
+    signal VPU ~ pin 16      # Pull-up supply for power valid output

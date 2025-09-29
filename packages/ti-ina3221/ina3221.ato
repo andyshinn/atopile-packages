@@ -1,0 +1,129 @@
+#pragma experiment("TRAITS")
+#pragma experiment("BRIDGE_CONNECT")
+#pragma experiment("MODULE_TEMPLATING")
+
+import I2C, ElectricPower, ElectricLogic, Capacitor, Addressor
+from "parts/TI_INA3221/INA3221.ato" import TI_INA3221
+
+module INA3221_driver:
+    """
+    TI INA3221 26V, Triple Channel, 13-Bit, I2C Output Current and Voltage Monitor
+
+    Features:
+    - Triple channel high-side current and voltage monitoring
+    - I2C/SMBus compatible interface with 4 programmable addresses
+    - Bus voltage range: 0V to 26V
+    - Supply voltage: 2.7V to 5.5V
+    - Programmable alerts and warnings
+    - Power valid and timing control outputs
+    """
+
+    # Main IC
+    ic = new TI_INA3221
+
+    # Power supply (2.7V to 5.5V)
+    power_3v3 = new ElectricPower
+    power_3v3.vcc ~ ic.VS
+    power_3v3.gnd ~ ic.GND
+    assert power_3v3.voltage within 2.7V to 5.5V
+
+    # Supply decoupling
+    power_3v3_cap = new Capacitor
+    power_3v3_cap.capacitance = 100nF +/- 20%
+    power_3v3_cap.package = "0402"
+    power_3v3.hv ~> power_3v3_cap ~> power_3v3.lv
+
+    # Pull-up supply for power valid output (typically same as main supply)
+    power_pu = new ElectricPower
+    power_pu.vcc ~ ic.VPU
+    power_pu.gnd ~ ic.GND
+    assert power_pu.voltage within 2.7V to 5.5V
+
+    # I2C interface with programmable address
+    i2c = new I2C
+    i2c.scl.line ~ ic.SCL
+    i2c.sda.line ~ ic.SDA
+    i2c.scl.reference ~ power_3v3
+    i2c.sda.reference ~ power_3v3
+    i2c.frequency = 400kHz +/- 50%  # Fast mode I2C
+
+    # Address configuration (4 programmable addresses via A0 pin)
+    # A0 can be connected to GND, VS, SDA, or SCL
+    # Base address: 0b1000000 (0x40)
+    addressor = new Addressor<address_bits=1>
+    addressor.base = 0x40
+    assert addressor.address is i2c.address
+    addressor.address_lines[0].line ~ ic.A0
+    addressor.address_lines[0].reference ~ power_3v3
+
+    # Channel 1 inputs
+    ch1_in_p = new ElectricLogic  # Connect to supply side of shunt
+    ch1_in_n = new ElectricLogic  # Connect to load side of shunt
+    ch1_in_p.line ~ ic.IN1_P
+    ch1_in_n.line ~ ic.IN1_N
+    ch1_in_p.reference ~ power_3v3
+    ch1_in_n.reference ~ power_3v3
+
+    # Channel 2 inputs
+    ch2_in_p = new ElectricLogic  # Connect to supply side of shunt
+    ch2_in_n = new ElectricLogic  # Connect to load side of shunt
+    ch2_in_p.line ~ ic.IN2_P
+    ch2_in_n.line ~ ic.IN2_N
+    ch2_in_p.reference ~ power_3v3
+    ch2_in_n.reference ~ power_3v3
+
+    # Channel 3 inputs
+    ch3_in_p = new ElectricLogic  # Connect to supply side of shunt
+    ch3_in_n = new ElectricLogic  # Connect to load side of shunt
+    ch3_in_p.line ~ ic.IN3_P
+    ch3_in_n.line ~ ic.IN3_N
+    ch3_in_p.reference ~ power_3v3
+    ch3_in_n.reference ~ power_3v3
+
+    # Alert outputs (all open-drain, require external pull-ups)
+    critical_alert = new ElectricLogic
+    critical_alert.line ~ ic.CRITICAL
+    critical_alert.reference ~ power_3v3
+
+    warning_alert = new ElectricLogic
+    warning_alert.line ~ ic.WARNING
+    warning_alert.reference ~ power_3v3
+
+    power_valid = new ElectricLogic
+    power_valid.line ~ ic.PV
+    power_valid.reference ~ power_pu  # Uses VPU supply
+
+    timing_control = new ElectricLogic
+    timing_control.line ~ ic.TC
+    timing_control.reference ~ power_3v3
+
+module Example:
+    """Example usage of the INA3221 current monitor"""
+
+    # Power supplies
+    power_3v3 = new ElectricPower
+    power_5v = new ElectricPower
+
+    # INA3221 monitor
+    current_monitor = new INA3221_driver
+
+    # Connect power supply to monitor
+    current_monitor.power_3v3 ~ power_3v3
+    current_monitor.power_pu ~ power_3v3
+
+    # I2C bus connection (connect to microcontroller)
+    i2c_bus = new I2C
+    i2c_bus ~ current_monitor.i2c
+
+    # Example: Monitor 3.3V rail current
+    # Connect channel 1 to monitor 3.3V supply current
+    # (In practice, you'd connect to shunt resistor on the 3.3V rail)
+    # current_monitor.ch1_in_p.line ~ supply_side_of_shunt
+    # current_monitor.ch1_in_n.line ~ load_side_of_shunt
+
+    # Set I2C address via A0 pin configuration
+    # A0 = GND -> address 0x40
+    # A0 = VS  -> address 0x41
+    # A0 = SDA -> address 0x42
+    # A0 = SCL -> address 0x43
+    current_monitor.addressor.address_lines[0].line ~ power_3v3.gnd  # A0 = GND, address = 0x40
