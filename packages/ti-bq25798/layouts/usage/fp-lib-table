@@ -15,6 +15,13 @@
         (descr "atopile: part lib: Murata_Electronics_GRM21BC8YA106KE11L")
     )
     (lib
+        (name "PANASONIC_ERJ2RKF3900X")
+        (type "KiCad")
+        (uri "${KIPRJMOD}/../../parts/PANASONIC_ERJ2RKF3900X")
+        (options "")
+        (descr "atopile: part lib: PANASONIC_ERJ2RKF3900X")
+    )
+    (lib
         (name "Samsung_Electro_Mechanics_CL05A105KQ5NNNC")
         (type "KiCad")
         (uri "${KIPRJMOD}/../../parts/Samsung_Electro_Mechanics_CL05A105KQ5NNNC")

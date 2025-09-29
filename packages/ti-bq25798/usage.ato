@@ -5,8 +5,13 @@ import ElectricPower, I2C
 from "bq25798.ato" import BQ25798_driver
 
 module Usage:
-    # BQ25798 charger IC
+    # BQ25798 charger IC with custom configuration
     charger = new BQ25798_driver
+
+    # Configure charge parameters for specific application
+    charger.charge_current_limit = 2A +/- 5%      # 2A charge current for smaller battery
+    charger.input_current_limit = 1.5A +/- 5%     # 1.5A input limit for USB PD
+    charger.battery_regulation_voltage = 12.6V +/- 1%  # 3S Li-Ion configuration
 
     # Basic power connections
     usb_input = new ElectricPower

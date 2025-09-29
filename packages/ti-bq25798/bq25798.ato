@@ -6,6 +6,16 @@ module BQ25798_driver:
     # Import the actual TI BQ25798 component
     package = new Texas_Instruments_BQ25798RQMR_package
 
+    # Configurable parameters
+    charge_current_limit: A = 3.08A +/- 10%  # Default ~3A charge current (390ohm prog resistor)
+    input_current_limit: A = 2A +/- 10%   # Default 2A input current limit
+    battery_regulation_voltage: V = 16.8V +/- 1%  # Default for 4S Li-Ion (4.2V per cell)
+
+    # Parameter constraints
+    assert charge_current_limit within 0.1A to 5A  # BQ25798 charge current range
+    assert input_current_limit within 0.1A to 3.3A  # BQ25798 input current range
+    assert battery_regulation_voltage within 2.8V to 18.8V  # 1-4 cell range
+
     # Power interfaces
     power_vbus = new ElectricPower
     power_vbus.required = True
@@ -63,9 +73,9 @@ module BQ25798_driver:
     power_on.line ~ package.nQON
     power_on.reference ~ power_regn
 
-    input_current_limit = new ElectricLogic
-    input_current_limit.line ~ package.ILIM_HIZ
-    input_current_limit.reference ~ power_regn
+    input_limit_hiz = new ElectricLogic
+    input_limit_hiz.line ~ package.ILIM_HIZ
+    input_limit_hiz.reference ~ power_regn
 
     # Status pins
     charge_status = new ElectricLogic
@@ -90,10 +100,15 @@ module BQ25798_driver:
     thermal_sense.line ~ package.TS
     thermal_sense.reference ~ power_regn
 
-    # Programming current setting
-    program_current = new ElectricLogic
-    program_current.line ~ package.PROG
-    program_current.reference ~ power_regn
+    # Programming current setting via resistor
+    # PROG pin resistor sets charge current: Ichg = 1000 * (1.2V / Rprog)
+    prog_resistor = new Resistor
+    prog_resistor.resistance = 390ohm +/- 1%  # Sets ~3.08A charge current (1200mV / 390ohm * 1000)
+    prog_resistor.max_power = 0.1W  # 100mW is available on LCSC, actual power ~3.7mW
+    # prog_resistor.max_voltage = 5V
+    prog_resistor.package = "0402"
+    package.PROG ~ prog_resistor.unnamed[0]
+    power_regn.lv ~ prog_resistor.unnamed[1]  # Connect to ground
 
     # Battery positive terminal
     battery_positive = new ElectricLogic

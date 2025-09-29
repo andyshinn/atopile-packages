@@ -90,7 +90,6 @@
     (net 4 "TS")
     (net 5 "power_vac1-VCC")
     (net 6 "nQON")
-    (net 7 "PROG")
     (net 8 "SCL")
     (net 9 "power_battery-VCC")
     (net 10 "power_system-VCC")
@@ -111,6 +110,7 @@
     (net 25 "STAT")
     (net 26 "switch1")
     (net 27 "Dpos")
+    (net 28 "PROG")
     (footprint "CCTC_TCC0402X5R104M250AT:C0402"
         (layer "F.Cu")
         (uuid "0ab0514d-8f4f-4f20-bc55-ae804642524b")
@@ -1256,7 +1256,7 @@
             (at 1.95 -0.02 0)
             (size 0.6 0.2)
             (layers "F.Cu" "F.Paste" "F.Mask")
-            (net 7 "PROG")
+            (net 28 "PROG")
             (uuid "fc9e89f4-a458-43b9-b757-f3a109b13857")
         )
         (pad "19" smd rect
@@ -2548,6 +2548,277 @@
             (uuid "0a63913d-8ae8-46ea-8dca-4b276449f5a3")
         )
         (model "${KIPRJMOD}/../../parts/Murata_Electronics_GRM21BC8YA106KE11L/C0805_L2.0-W1.3-H1.3.step"
+            (offset
+                (xyz 0 0 0)
+            )
+            (scale
+                (xyz 1 1 1)
+            )
+            (rotate
+                (xyz 0 0 0)
+            )
+        )
+    )
+    (footprint "PANASONIC_ERJ2RKF3900X:R0402"
+        (layer "F.Cu")
+        (uuid "8d809142-c4a5-446d-b320-e2504642524b")
+        (at 0 0 0)
+        (property "Reference" "R1"
+            (at 0 -4 0)
+            (layer "F.SilkS")
+            (hide no)
+            (uuid "41e500a8-883f-411a-90c9-71764fd4cfbb")
+            (effects
+                (font
+                    (size 1 1)
+                    (thickness 0.15)
+                )
+            )
+        )
+        (property "Value" "390Ω ±1% 100mW"
+            (at 0 4 0)
+            (layer "F.Fab")
+            (hide no)
+            (uuid "8923ee3f-77de-4d8c-ad3c-517993d4aecd")
+            (effects
+                (font
+                    (size 1 1)
+                    (thickness 0.15)
+                )
+            )
+        )
+        (property "checksum" "27c1e32e6e6d54ef25612604adafcdce3528f032b681cf11f42ba267740a31de"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide no)
+            (uuid "d52426f9-7dc1-4fb9-85b9-38263ebc8f2a")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+                (hide yes)
+            )
+        )
+        (property "__atopile_lib_fp_hash__" "027b3c5b-200a-902d-29ae-4bfcb1c2dfc6"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "bb46457b-b76d-4773-8c0d-d78a4642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (property "LCSC" "C413074"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "dbbf984e-d94c-4a44-9014-86ac4642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (property "Manufacturer" "PANASONIC"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "dc9aa604-ac9f-4f6a-bb91-421e4642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (property "Partnumber" "ERJ2RKF3900X"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "d127f064-1897-46e4-b5fc-10274642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (property "PARAM_max_power" "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.1, \"max\": 0.1}}]}}, \"unit\": \"watt\"}}"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "a1162ed6-7ee7-4858-9d65-13384642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (property "PARAM_max_voltage" "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.0, \"max\": null}}]}}, \"unit\": \"volt\"}}"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "616a81c6-4271-45d1-a9f0-55464642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (property "PARAM_resistance" "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 386.1000000871718, \"max\": 393.8999999128282}}]}}, \"unit\": \"ohm\"}}"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "306bd65e-9c07-4312-b901-c4114642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1912111437_PANASONIC-ERJ2RKF3900X_C413074.pdf"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "fc23d387-2a20-48e0-b75e-f7ca4642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (property "atopile_address" "prog_resistor"
+            (at 0 0 0)
+            (layer "User.9")
+            (hide yes)
+            (uuid "48259dcf-0681-4330-a2ba-eaed4642524b")
+            (effects
+                (font
+                    (size 0.125 0.125)
+                    (thickness 0.01875)
+                )
+            )
+        )
+        (attr smd)
+        (fp_line
+            (start -0.23 0.5)
+            (end -0.94 0.5)
+            (stroke
+                (width 0.15)
+                (type solid)
+            )
+            (layer "F.SilkS")
+            (uuid "75fd8392-6bdc-441b-8cb8-b2454c7d2f84")
+        )
+        (fp_line
+            (start -0.94 0.5)
+            (end -0.94 -0.5)
+            (stroke
+                (width 0.15)
+                (type solid)
+            )
+            (layer "F.SilkS")
+            (uuid "58deaf1e-69f7-4414-9601-fa475c10e463")
+        )
+        (fp_line
+            (start -0.94 -0.5)
+            (end -0.23 -0.5)
+            (stroke
+                (width 0.15)
+                (type solid)
+            )
+            (layer "F.SilkS")
+            (uuid "360cd73e-b2e0-498b-b054-d43c8a41330a")
+        )
+        (fp_line
+            (start 0.23 0.5)
+            (end 0.94 0.5)
+            (stroke
+                (width 0.15)
+                (type solid)
+            )
+            (layer "F.SilkS")
+            (uuid "2e21b4d2-1014-47b5-8647-2e3671dbdd08")
+        )
+        (fp_line
+            (start 0.94 0.5)
+            (end 0.94 -0.5)
+            (stroke
+                (width 0.15)
+                (type solid)
+            )
+            (layer "F.SilkS")
+            (uuid "7665fb13-a0a5-4681-98d0-5b34378aabdd")
+        )
+        (fp_line
+            (start 0.94 -0.5)
+            (end 0.23 -0.5)
+            (stroke
+                (width 0.15)
+                (type solid)
+            )
+            (layer "F.SilkS")
+            (uuid "e2b1e422-bd19-4fe4-9baf-73d51ed67242")
+        )
+        (fp_circle
+            (center -0.5 0.25)
+            (end -0.47 0.25)
+            (stroke
+                (width 0.06)
+                (type solid)
+            )
+            (fill no)
+            (layer "F.Fab")
+            (uuid "a894c145-dabc-4df9-bab7-21ec18f67a49")
+        )
+        (fp_text user "%R"
+            (at 0 0 0)
+            (layer "F.Fab")
+            (uuid "b8b24527-8236-4124-a3f5-7fed82f26eb5")
+            (effects
+                (font
+                    (size 1 1)
+                    (thickness 0.15)
+                )
+            )
+            (unlocked no)
+        )
+        (fp_text user "${REFERENCE}"
+            (at 0 -4 0)
+            (layer "F.SilkS")
+            (uuid "41e500a8-883f-411a-90c9-71764fd4cfbb")
+            (effects
+                (font
+                    (size 1 1)
+                    (thickness 0.15)
+                )
+            )
+            (unlocked no)
+        )
+        (pad "2" smd rect
+            (at 0.43 0 0)
+            (size 0.57 0.54)
+            (layers "F.Cu" "F.Paste" "F.Mask")
+            (net 15 "GND")
+            (uuid "cd95787d-dad2-490b-a595-a966cd94c74b")
+        )
+        (pad "1" smd rect
+            (at -0.43 0 0)
+            (size 0.57 0.54)
+            (layers "F.Cu" "F.Paste" "F.Mask")
+            (net 28 "PROG")
+            (uuid "ee0ca8aa-7b3d-4699-b59c-9657f4a48934")
+        )
+        (model "${KIPRJMOD}/../../parts/PANASONIC_ERJ2RKF3900X/R0402_L1.0-W0.5-H0.4.step"
             (offset
                 (xyz 0 0 0)
             )

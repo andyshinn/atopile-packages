@@ -27,6 +27,11 @@ from "ti-bq25798/bq25798.ato" import BQ25798_driver
 module MyCharger:
     charger = new BQ25798_driver
 
+    # Configure charge parameters for your application
+    charger.charge_current_limit = 2A +/- 5%      # Custom charge current
+    charger.input_current_limit = 1.5A +/- 5%     # Input current limit
+    charger.battery_regulation_voltage = 12.6V +/- 1%  # 3S Li-Ion setup
+
     # Power connections
     usb_input = new ElectricPower
     solar_input = new ElectricPower
@@ -36,10 +41,6 @@ module MyCharger:
     # I2C for control
     control_bus = new I2C
 
-    # External inductor for buck-boost operation
-    main_inductor = new Inductor
-    main_inductor.inductance = 2.2uH +/- 20%
-
     # Connect interfaces
     usb_input ~ charger.power_vbus
     solar_input ~ charger.power_vac1
@@ -47,10 +48,15 @@ module MyCharger:
     system_rail ~ charger.power_system
     control_bus ~ charger.i2c
 
-    # Connect external inductor
-    charger.switch1 ~ main_inductor.unnamed[0]
-    charger.switch2 ~ main_inductor.unnamed[1]
+    # External inductor required: connect charger.switch1 and charger.switch2
+    # to a 2.2uH, 8A rated inductor (e.g., Bourns SRR1208 series)
 ```
+
+## Configurable Parameters
+
+- `charge_current_limit`: Maximum charge current (0.1A to 5A, default: 3A)
+- `input_current_limit`: Input current limit (0.1A to 3.3A, default: 2A)
+- `battery_regulation_voltage`: Battery regulation voltage (2.8V to 18.8V, default: 16.8V for 4S)
 
 ## Power Interfaces
 
@@ -70,7 +76,7 @@ module MyCharger:
 
 - `charge_enable`: Charge enable control (active low)
 - `power_on`: System power on control (active low)
-- `input_current_limit`: Input current limit / Hi-Z control
+- `input_limit_hiz`: Input current limit / Hi-Z control
 - `charge_status`: Charge status output
 - `interrupt`: Interrupt output (active low)
 
