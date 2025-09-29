@@ -1,0 +1,174 @@
+import Resistor, Capacitor
+import ElectricPower, Electrical, ElectricLogic, I2C
+from "parts/Texas_Instruments_BQ25798RQMR/Texas_Instruments_BQ25798RQMR.ato" import Texas_Instruments_BQ25798RQMR_package
+
+module BQ25798_driver:
+    # Import the actual TI BQ25798 component
+    package = new Texas_Instruments_BQ25798RQMR_package
+
+    # Power interfaces
+    power_vbus = new ElectricPower
+    power_vbus.required = True
+    assert power_vbus.voltage within 3.6V to 24V
+    power_vbus.hv ~ package.VBUS
+    power_vbus.lv ~ package.GND
+
+    power_vac1 = new ElectricPower
+    power_vac1.required = False
+    assert power_vac1.voltage within 3.6V to 24V
+    power_vac1.hv ~ package.VAC1
+    power_vac1.lv ~ package.GND
+
+    power_vac2 = new ElectricPower
+    power_vac2.required = False
+    assert power_vac2.voltage within 3.6V to 24V
+    power_vac2.hv ~ package.VAC2
+    power_vac2.lv ~ package.GND
+
+    power_battery = new ElectricPower
+    power_battery.required = True
+    assert power_battery.voltage within 2.8V to 18.8V  # 1-4 cell range
+    power_battery.hv ~ package.BAT
+    power_battery.lv ~ package.GND
+
+    power_system = new ElectricPower
+    power_system.required = True
+    assert power_system.voltage within 2.8V to 22V
+    power_system.hv ~ package.SYS
+    power_system.lv ~ package.GND
+
+    power_regn = new ElectricPower
+    assert power_regn.voltage within 3.2V to 3.4V
+    power_regn.hv ~ package.REGN
+    power_regn.lv ~ package.GND
+
+    power_pmid = new ElectricPower
+    power_pmid.hv ~ package.PMID
+    power_pmid.lv ~ package.GND
+
+    # I2C interface
+    i2c = new I2C
+    i2c.address = 0x6B  # Default I2C address for BQ25798
+    i2c.scl.line ~ package.SCL
+    i2c.sda.line ~ package.SDA
+    i2c.scl.reference ~ power_regn
+    i2c.sda.reference ~ power_regn
+
+    # Control pins
+    charge_enable = new ElectricLogic
+    charge_enable.line ~ package.nCE
+    charge_enable.reference ~ power_regn
+
+    power_on = new ElectricLogic
+    power_on.line ~ package.nQON
+    power_on.reference ~ power_regn
+
+    input_current_limit = new ElectricLogic
+    input_current_limit.line ~ package.ILIM_HIZ
+    input_current_limit.reference ~ power_regn
+
+    # Status pins
+    charge_status = new ElectricLogic
+    charge_status.line ~ package.STAT
+    charge_status.reference ~ power_regn
+
+    interrupt = new ElectricLogic
+    interrupt.line ~ package.nINT
+    interrupt.reference ~ power_regn
+
+    # USB data interface
+    usb_dp = new ElectricLogic
+    usb_dp.line ~ package.Dpos
+    usb_dp.reference ~ power_regn
+
+    usb_dm = new ElectricLogic
+    usb_dm.line ~ package.Dneg
+    usb_dm.reference ~ power_regn
+
+    # Thermal sensing
+    thermal_sense = new ElectricLogic
+    thermal_sense.line ~ package.TS
+    thermal_sense.reference ~ power_regn
+
+    # Programming current setting
+    program_current = new ElectricLogic
+    program_current.line ~ package.PROG
+    program_current.reference ~ power_regn
+
+    # Battery positive terminal
+    battery_positive = new ElectricLogic
+    battery_positive.line ~ package.BATP
+    battery_positive.reference ~ power_regn
+
+    # Switching nodes (for external inductors)
+    switch1 = new Electrical
+    switch1 ~ package.SW1
+
+    switch2 = new Electrical
+    switch2 ~ package.SW2
+
+    # Bootstrap capacitor connections
+    bootstrap1 = new Electrical
+    bootstrap1 ~ package.BTST1
+
+    bootstrap2 = new Electrical
+    bootstrap2 ~ package.BTST2
+
+    # AC drive pins
+    ac_drive1 = new Electrical
+    ac_drive1 ~ package.ACDRV1
+
+    ac_drive2 = new Electrical
+    ac_drive2 ~ package.ACDRV2
+
+    # Source drive
+    source_drive = new Electrical
+    source_drive ~ package.SDRV
+
+    # Decoupling capacitors
+    # VBUS decoupling (input power)
+    vbus_cap = new Capacitor
+    vbus_cap.capacitance = 10uF +/- 20%
+    vbus_cap.max_voltage = 35V
+    vbus_cap.package = "0805"
+    power_vbus.hv ~ vbus_cap.unnamed[0]
+    power_vbus.lv ~ vbus_cap.unnamed[1]
+
+    # REGN decoupling (internal regulator)
+    regn_cap = new Capacitor
+    regn_cap.capacitance = 1uF +/- 20%
+    regn_cap.max_voltage = 6.3V
+    regn_cap.package = "0402"
+    power_regn.hv ~ regn_cap.unnamed[0]
+    power_regn.lv ~ regn_cap.unnamed[1]
+
+    # Additional REGN bypass capacitor
+    regn_bypass = new Capacitor
+    regn_bypass.capacitance = 100nF +/- 20%
+    regn_bypass.max_voltage = 6.3V
+    regn_bypass.package = "0402"
+    power_regn.hv ~ regn_bypass.unnamed[0]
+    power_regn.lv ~ regn_bypass.unnamed[1]
+
+    # System power decoupling
+    sys_cap = new Capacitor
+    sys_cap.capacitance = 10uF +/- 20%
+    sys_cap.max_voltage = 25V
+    sys_cap.package = "0805"
+    power_system.hv ~ sys_cap.unnamed[0]
+    power_system.lv ~ sys_cap.unnamed[1]
+
+    # Bootstrap capacitors for switching MOSFETs
+    btst1_cap = new Capacitor
+    btst1_cap.capacitance = 100nF +/- 20%
+    btst1_cap.max_voltage = 25V
+    btst1_cap.package = "0402"
+    bootstrap1 ~ btst1_cap.unnamed[0]
+    switch1 ~ btst1_cap.unnamed[1]
+
+    btst2_cap = new Capacitor
+    btst2_cap.capacitance = 100nF +/- 20%
+    btst2_cap.max_voltage = 25V
+    btst2_cap.package = "0402"
+    bootstrap2 ~ btst2_cap.unnamed[0]
+    switch2 ~ btst2_cap.unnamed[1]

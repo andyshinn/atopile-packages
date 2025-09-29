@@ -1,0 +1,18 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component Murata_Electronics_GRM21BC8YA106KE11L_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C469541", date="2025-09-29T01:43:50.893248+00:00", checksum="4f18a0343535e143814b893ab67591e77effa411cf527a122de622af9fc0bd07">
+
+    trait is_atomic_part<manufacturer="Murata Electronics", partnumber="GRM21BC8YA106KE11L", footprint="C0805.kicad_mod", symbol="GRM21BC8YA106KE11L.kicad_sym", model="C0805_L2.0-W1.3-H1.3.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C469541", manufacturer="Murata Electronics", partno="GRM21BC8YA106KE11L">
+    trait has_designator_prefix<prefix="C">
+
+    # pins
+    pin 1
+    pin 2

@@ -1,0 +1,22 @@
+requires-atopile: "^0.12.4"
+
+paths:
+  src: ./
+  layout: ./layouts
+
+builds:
+  default:
+    entry: bq25798.ato:BQ25798_driver
+  usage:
+    entry: usage.ato:Usage
+
+package:
+  identifier: "andyshinn/ti-bq25798"
+  repository: "https://github.com/andyshinn/atopile-packages"
+  version: "0.1.0"
+  authors:
+    - name: "Andy Shinn"
+      email: "andys@andyshinn.as"
+  summary: "TI BQ25798; Buck-Boost Battery Charger; USB PD 3.0; 1-4 Cell; I2C; QFN-29"
+  license: MIT
+  homepage: https://www.ti.com/product/BQ25798

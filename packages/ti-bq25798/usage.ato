@@ -1,0 +1,27 @@
+"""Example usage of the TI BQ25798 buck-boost battery charger IC."""
+
+import ElectricPower, I2C
+
+from "bq25798.ato" import BQ25798_driver
+
+module Usage:
+    # BQ25798 charger IC
+    charger = new BQ25798_driver
+
+    # Basic power connections
+    usb_input = new ElectricPower
+    assert usb_input.voltage within 5V to 20V
+    usb_input ~ charger.power_vbus
+
+    battery_pack = new ElectricPower
+    assert battery_pack.voltage within 3.0V to 16.8V
+    battery_pack ~ charger.power_battery
+
+    system_rail = new ElectricPower
+    assert system_rail.voltage within 3.0V to 22V
+    system_rail ~ charger.power_system
+
+    # I2C control
+    control_bus = new I2C
+    assert control_bus.frequency within 100kHz to 400kHz
+    control_bus ~ charger.i2c
