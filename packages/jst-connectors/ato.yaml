@@ -1,0 +1,26 @@
+requires-atopile: "^0.12.4"
+
+paths:
+  src: ./
+  layout: ./layouts
+
+builds:
+  default:
+    entry: jst-ph.ato:JST_PH_2pin_driver
+  jst_ph_2pin_smt:
+    entry: jst-ph.ato:JST_PH_2pin_SMT_driver
+  jst_ph_2pin_th:
+    entry: jst-ph.ato:JST_PH_2pin_TH_driver
+  usage:
+    entry: usage.ato:Usage
+
+package:
+  identifier: "andyshinn/jst-connectors"
+  repository: "https://github.com/andyshinn/atopile-packages"
+  version: "0.1.0"
+  authors:
+    - name: "Andy Shinn"
+      email: "andys@andyshinn.as"
+  summary: "JST PH Series Connectors; 2.0mm pitch; Through-hole and SMT"
+  license: MIT
+  homepage: https://www.jst-mfg.com/product/detail_e.php?series=199

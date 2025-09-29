@@ -1,0 +1,12 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+
+component S2B_PH_K_S_package:
+    trait is_atomic_part<manufacturer="JST", partnumber="S2B-PH-K-S", footprint="S2B-PH-K-S.kicad_mod", symbol="S2B-PH-K-S.kicad_sym", model="S2B-PH-K-S.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C160352", manufacturer="JST", partno="S2B-PH-K-S">
+    trait has_designator_prefix<prefix="CN">
+
+    pin 1
+    pin 2

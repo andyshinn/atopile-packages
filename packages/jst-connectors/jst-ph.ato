@@ -1,0 +1,36 @@
+#pragma experiment("TRAITS")
+
+import Electrical
+import ElectricPower
+import ElectricLogic
+
+from "./parts/S2B-PH-K-S/S2B-PH-K-S.ato" import S2B_PH_K_S_package
+from "./parts/B2B-PH-SM4-TB/B2B-PH-SM4-TB.ato" import B2B_PH_SM4_TB_package
+
+module JST_PH_2pin_driver:
+    """JST PH 2-pin connector driver (through-hole)"""
+
+    # Electrical interfaces
+    pin1 = new Electrical
+    pin2 = new Electrical
+
+module JST_PH_2pin_SMT_driver from JST_PH_2pin_driver:
+    """JST PH 2-pin SMT connector driver"""
+
+    # SMT connector
+    connector = new B2B_PH_SM4_TB_package
+
+    # Connect pins
+    pin1 ~ connector.1
+    pin2 ~ connector.2
+
+module JST_PH_2pin_TH_driver from JST_PH_2pin_driver:
+    """JST PH 2-pin through-hole connector driver"""
+
+    # Through-hole connector
+    connector = new S2B_PH_K_S_package
+
+    # Connect pins
+    pin1 ~ connector.1
+    pin2 ~ connector.2
+

@@ -1,0 +1,16 @@
+import Electrical
+import ElectricPower
+import ElectricLogic
+
+from "./jst-ph.ato" import JST_PH_2pin_TH_driver
+
+module Usage:
+    """Example usage of JST PH connectors"""
+
+    # Power connector example
+    power_connector = new JST_PH_2pin_TH_driver
+    power_rail = new ElectricPower
+
+    # Connect power
+    power_rail.hv ~ power_connector.pin1
+    power_rail.lv ~ power_connector.pin2
